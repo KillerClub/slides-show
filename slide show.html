@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        	*{
+        		margin: 0;
+        		padding: 0;
+        		list-style-type: none;
+        	}
+        	.fcous{
+        		width: 500px;
+        		height: 280px;
+        		margin: 100px auto;
+        		position: relative;
+        		overflow: hidden;
+        	}
+        	ul{
+        		width: 3000px;
+        		height: 280px;
+        		position: absolute;
+        		left: 0;
+        	}
+        	ul li{
+        		float: left;
+        	}
+        	ol{
+        		width: 200px;
+        		height: 20px;
+        		position: absolute;
+				left: 50%;
+				margin-left: -100px;
+				bottom: 15px;
+        	}
+        	ol li{
+        		width: 20px;
+        		height: 20px;
+        		border-radius: 50%;
+        		background: #ccc;
+        		opacity: .7;
+        		float: left;
+        		text-align: center;
+        		line-height: 20px;
+        		margin: 0 5px;
+        	}
+        	span{
+        		display: block;
+        		width: 30px;
+        		height: 50px;
+        		position: absolute;
+        		top: 50%;
+        		margin-top: -25px;
+        		color: #fff;
+        		font-size: 30px;
+        		cursor: pointer;
+        	}
+        	.prev{
+        		left: 0;
+        	}
+        	.next{
+        		right: 0;
+        	}
+        	.on{
+        		background: #f40;
+        	}
+        </style>
+    </head>
+    <body>
+    	<div class="fcous">
+    		<ul>
+    			<li><img src="images/1.jpg" alt=""></li>
+    			<li><img src="images/2.jpg" alt=""></li>
+    			<li><img src="images/3.jpg" alt=""></li>
+    			<li><img src="images/4.jpg" alt=""></li>
+    			<li><img src="images/5.jpg" alt=""></li>
+    			<li><img src="images/6.jpg" alt=""></li>
+    		</ul>
+    		<ol>
+    			<li>1</li>
+    			<li>2</li>
+    			<li>3</li>
+    			<li>4</li>
+    			<li>5</li>
+    			<li>6</li>
+    		</ol>
+    		<span class="prev">&lt;</span>
+    		<span class="next">&gt;</span>
+    	</div>
+    	<script>
+    		var fcous = document.getElementsByClassName('fcous')[0],
+    			ul    = document.getElementsByTagName('ul')[0],
+    			lis   = document.getElementsByTagName('ol')[0].getElementsByTagName('li'),
+    			prev  = document.getElementsByTagName('span')[0],
+    			next  = document.getElementsByTagName('span')[1],
+    			init  = 0, //当前索引值
+    			timer = null;
+    			
+    			next.onclick = function(){
+    				init ++;
+    				init = init>5 ? 0 : init;
+    				move(init);
+    			}
+    			prev.onclick = function(){
+    				init --;
+    				init = init<0 ? 5 : init;
+    				move(init);
+    			}
+
+    			function move(idx){
+    				// ul.style.left = idx * -500 + 'px';
+    				 slide(ul,idx*-500+500,idx*-500,50,20);
+    				for(var i = 0;i<lis.length;i++){
+    					lis[i].className = ' ';
+    				}
+    				lis[idx].className = 'on';
+    			}
+
+    			for(var i = 0;i<lis.length;i++){
+    				lis[i].idx = i;
+    				lis[i].onclick = function(){
+    					move(this.idx);
+    				}
+    			}
+    			function start(){
+    				timer = setInterval(function(){
+	    				init ++;
+	    				init = init>5 ? 0 : init;
+	    				move(init);
+    				},1000);
+    			}
+
+    			start();
+
+    			fcous.onmouseover = function(){
+    				clearInterval(timer);
+    			}
+    			fcous.onmouseout = function(){
+    				start();
+    			}
+
+
+        
+    	function slide(ele,x1,x2,step,s){
+            var timer;
+            if(x1<x2){  //右滑
+                timer = setInterval(function(){
+                    x1 += step;
+                    if(x1 >= x2){
+                        clearInterval(timer);
+                    }
+                    ele.style.left = x1 + 'px';
+                },s);
+            }else{    //左滑
+                timer = setInterval(function(){
+                    x1 -= step;
+                    if(x1 <= x2){
+                        clearInterval(timer);
+                    }
+                    ele.style.left = x1 + 'px';
+                },s);
+            }
+        }
+   		</script>
+    </body>
+</html>
